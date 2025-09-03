@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>UOM DATA PAGE</h3>
+	<table border="1">
+		<tr>
+			<th>ID</th>
+			<th>TYPE</th>
+			<th>MODEL</th>
+			<th>DESCRIPTION</th>
+			<th>OPERATION</th>
+		</tr>
+		<tr th:each="ob:${list}">
+			<td th:text="${ob.id}"></td>
+			<td th:text="${ob.uomType}"></td>
+			<td th:text="${ob.uomModel}"></td>
+			<td th:text="${ob.description}"></td>
+			<td >
+			<a th:href="@{/uom/delete?id={data}(data=${ob.id})}">DELETE</a>
+			<a th:href="@{/uom/edit?id={data}(data=${ob.id})}">EDIT</a>
+			
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
