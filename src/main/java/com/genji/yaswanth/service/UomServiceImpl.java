@@ -35,20 +35,19 @@ public class UomServiceImpl implements IUomService {
 
 	@Override
 	public void deleteUom(Integer id) {
-		
+
 		Uom uom = getOneUom(id);
 		repo.delete(uom);
 	}
 
 	@Override
 	public Uom getOneUom(Integer id) {
-		Optional<Uom> opt= repo.findById(id);
-		Uom uom=null;
-		if(opt.isPresent()) {
-			uom=opt.get();
-		}
-		else {
-			throw new UomNotFoundException("Uom "+id+" not exist");
+		Optional<Uom> opt = repo.findById(id);
+		Uom uom = null;
+		if (opt.isPresent()) {
+			uom = opt.get();
+		} else {
+			throw new UomNotFoundException("Uom " + id + " not exist");
 		}
 		return uom;
 	}

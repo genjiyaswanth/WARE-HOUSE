@@ -10,29 +10,29 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="wh_user_type_tab")
+@Table(name = "wh_user_type_tab")
 public class WhUserType {
 
 	@Id
 	@GeneratedValue(generator = "whusertype")
-	@SequenceGenerator(name="whusertype" , sequenceName = "whusertype_seq")
-	@Column(name="wh_id_col")
+	@SequenceGenerator(name = "whusertype", sequenceName = "whusertype_seq")
+	@Column(name = "wh_id_col")
 	private Integer id;
-	@Column(name="wh_type_col")
+	@Column(name = "wh_type_col")
 	private String userType;
-	@Column(name="wh_code_col")
+	@Column(name = "wh_code_col")
 	private String userCode;
-	@Column(name="wh_for_col")
+	@Column(name = "wh_for_col")
 	private String userFor;
-	@Column(name="wh_email_col")
+	@Column(name = "wh_email_col")
 	private String userEmail;
-	@Column(name="wh_contact_col")
+	@Column(name = "wh_contact_col")
 	private String userContact;
-	@Column(name="wh_id_type_col")
+	@Column(name = "wh_id_type_col")
 	private String userIdType;
-	@Column(name="wh_if_other_col")
+	@Column(name = "wh_if_other_col")
 	private String ifOther;
-	@Column(name="wh_id_number_col")
+	@Column(name = "wh_id_number_col")
 	private String idNumber;
-	
+
 }

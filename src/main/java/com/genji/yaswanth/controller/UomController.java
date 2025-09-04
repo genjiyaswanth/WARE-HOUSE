@@ -20,44 +20,48 @@ public class UomController {
 
 	@Autowired
 	private IUomService service;
-	
+
 	@GetMapping("/register")
-	public String showRegister() {
+	public String showRegister(Model model) {
+		model.addAttribute("uom", new Uom());
 		return "UomRegister";
 	}
-	
+
 	@PostMapping("/save")
 	public String saveUom(@ModelAttribute Uom uom, Model model) {
 		Integer id = service.saveUom(uom);
-		String message= "UOM saved with id:"+id;
-		model.addAttribute("message",message);
+		String message = "UOM saved with id:" + id;
+		model.addAttribute("message", message);
+		model.addAttribute("uom", new Uom());
 		return "UomRegister";
 	}
-	
+
 	@GetMapping("/all")
 	public String getAllUoms(Model model) {
 		List<Uom> list = service.getAllUoms();
-		model.addAttribute("list",list);
+		model.addAttribute("list", list);
 		return "UomData";
 	}
-	
+
 	@GetMapping("/delete")
 	public String deleteUom(@RequestParam Integer id, Model model) {
 		service.deleteUom(id);
+		String message = "UOM id "+id+" deleted";
+		model.addAttribute("message", message);
 		model.addAttribute("list", service.getAllUoms());
 		return "UomData";
 	}
-	
+
 	@GetMapping("/edit")
 	public String editUom(Integer id, Model model) {
 		model.addAttribute("uom", service.getOneUom(id));
 		return "UomEdit";
 	}
-	
+
 	@PostMapping("/update")
 	public String updateUom(@ModelAttribute Uom uom, Model model) {
 		service.updateUom(uom);
-		String message="UOM "+uom.getId()+" updated";
+		String message = "UOM " + uom.getId() + " updated";
 		model.addAttribute("message", message);
 		model.addAttribute("list", service.getAllUoms());
 		return "UomData";

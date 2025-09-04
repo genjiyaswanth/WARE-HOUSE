@@ -20,46 +20,47 @@ public class ShipmentTypeController {
 
 	@Autowired
 	private IShipmentTypeService service;
+
 	@GetMapping("/register")
 	public String showRegister() {
 		return "ShipmentTypeRegister";
 	}
-	
+
 	@PostMapping("/save")
 	public String saveShipmetType(@ModelAttribute ShipmentType st, Model model) {
-		Integer id=service.saveShipmentType(st);
-		String message="ShipmentType "+id+" saved";
+		Integer id = service.saveShipmentType(st);
+		String message = "ShipmentType " + id + " saved";
 		model.addAttribute("message", message);
 		return "ShipmentTypeRegister";
 	}
-	
+
 	@GetMapping("/all")
 	public String showAll(Model model) {
-		List<ShipmentType> list=service.getAllShipmentTypes();
+		List<ShipmentType> list = service.getAllShipmentTypes();
 		model.addAttribute("list", list);
 		return "ShipmentTypeData";
 	}
-	
+
 	@GetMapping("/delete")
 	public String deleteShipmentType(@RequestParam Integer id, Model model) {
 		service.deleteShipmentType(id);
-		String message="ShipmentType "+id+" deleted";
+		String message = "ShipmentType " + id + " deleted";
 		model.addAttribute("message", message);
 		model.addAttribute("list", service.getAllShipmentTypes());
 		return "ShipmentTypeData";
 	}
-	
+
 	@GetMapping("/edit")
 	public String showEdit(@RequestParam Integer id, Model model) {
-		
+
 		model.addAttribute("shipment", service.getOneShipmentType(id));
 		return "ShipmentTypeEdit";
 	}
-	
+
 	@PostMapping("/update")
 	public String doUpdate(@ModelAttribute ShipmentType st, Model model) {
 		service.updateShipmentType(st);
-		String message="ShipmentType "+st.getId()+" updated";
+		String message = "ShipmentType " + st.getId() + " updated";
 		model.addAttribute("message", message);
 		model.addAttribute("list", service.getAllShipmentTypes());
 		return "ShipmentTypeData";
