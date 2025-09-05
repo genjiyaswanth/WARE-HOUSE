@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.genji.yaswanth.model.Uom;
 import com.genji.yaswanth.service.IUomService;
+import com.genji.yaswanth.view.UomExcelExport;
 
 @Controller
 @RequestMapping("/uom")
@@ -65,5 +67,14 @@ public class UomController {
 		model.addAttribute("message", message);
 		model.addAttribute("list", service.getAllUoms());
 		return "UomData";
+	}
+	
+	@GetMapping("/excel")
+	public ModelAndView uomExportToExcel() {
+		ModelAndView mv= new ModelAndView();
+		List<Uom> uomList = service.getAllUoms();
+		mv.addObject("uomList", uomList);
+		mv.setView(new UomExcelExport());
+		return mv;
 	}
 }
