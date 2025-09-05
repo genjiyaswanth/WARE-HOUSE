@@ -16,7 +16,7 @@
                 <h3>UOM DATA PAGE</h3>
             </div>
             <div class="card-body bg-light">
-                <table class="table table-hover">
+                <table class="table table-hover text-center">
                     <tr class="bg-info text-white">
                         <th>ID</th>
                         <th>TYPE</th>
@@ -30,7 +30,7 @@
                         <td th:text="${ob.uomModel}"></td>
                         <td th:text="${ob.description}"></td>
                         <td >
-                        <a class="btn btn-warning" th:href="@{/uom/delete?id={data}(data=${ob.id})}">DELETE</a>
+                        <a class="btn btn-danger" th:href="@{/uom/delete?id={data}(data=${ob.id})}">DELETE</a>
                         | <a class="btn btn-info" th:href="@{/uom/edit?id={data}(data=${ob.id})}">EDIT</a>
                         
                         </td>

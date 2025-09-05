@@ -22,7 +22,8 @@ public class ShipmentTypeController {
 	private IShipmentTypeService service;
 
 	@GetMapping("/register")
-	public String showRegister() {
+	public String showRegister(Model model) {
+		model.addAttribute("shipment", new ShipmentType());
 		return "ShipmentTypeRegister";
 	}
 
@@ -31,6 +32,7 @@ public class ShipmentTypeController {
 		Integer id = service.saveShipmentType(st);
 		String message = "ShipmentType " + id + " saved";
 		model.addAttribute("message", message);
+		model.addAttribute("shipment", new ShipmentType());
 		return "ShipmentTypeRegister";
 	}
 
@@ -60,7 +62,7 @@ public class ShipmentTypeController {
 	@PostMapping("/update")
 	public String doUpdate(@ModelAttribute ShipmentType st, Model model) {
 		service.updateShipmentType(st);
-		String message = "ShipmentType " + st.getId() + " updated";
+		String message = "Shipmenttype " + st.getId() + " updated";
 		model.addAttribute("message", message);
 		model.addAttribute("list", service.getAllShipmentTypes());
 		return "ShipmentTypeData";

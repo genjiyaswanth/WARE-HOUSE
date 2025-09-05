@@ -16,11 +16,11 @@
                 <h3>UOM UPDATE PAGE</h3>
             </div>
             <div class="card-body bg-light">
-                <form th:action="@{/uom/update}" method="post" th:object="${uom}">
+                <form th:action="@{/uom/update}" method="post" th:object="${uom}" id="formupdate">
                 
                 	<div class="row">
                         <div class="col-2">
-                            <label for="ID">UOM MODEL</label>
+                            <label for="ID">UOM ID</label>
                         </div>
                         <div class="col-5">
                             <input type="text" th:field="*{id} " class="form-control" readonly />
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-5">
                             <select th:field="*{uomType}" class="form-control">
-                                <option value="-1">--SELECT--</option>
+                                <option value="">--SELECT--</option>
                                 <option value="PACKING">PACKING</option>
                                 <option value="NO PACKING">NO PACKING</option>
                                 <option value="NA">NA</option>
@@ -67,7 +67,7 @@
                             <textarea rows="" cols="" th:field="*{description}" class="form-control"></textarea>
                         </div>
                         <div class="col-5">
-                            <span id="description"></span>
+                            <span id="descriptionError"></span>
                         </div>
                     </div>
                       
@@ -77,5 +77,92 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            $("#uomTypeError").hide();
+            $("#uomModelError").hide();
+            $("#descriptionError").hide();
+            var uomTypeError=false;
+            var uomModelError=false;
+            var descriptionError=false;
+            function validate_uomType(){
+                var uom_type= $("#uomType").val();
+                if(uom_type==''){
+                    $("#uomTypeError").show();
+                    $("#uomTypeError").html("<b>Please select a UOM Type</b>");
+                    $("#uomTypeError").css('color',"red");
+                    uomTypeError=false;
+                }
+                else{
+                    $("#uomTypeError").hide();
+                    uomTypeError=true;
+                }
+            }
+            function validate_uomModel(){
+                var uom_model= $("#uomModel").val();
+                var exp=/^[A-Z\-\s]{4,8}$/;
+                if(uom_model==''){
+                    $("#uomModelError").show();
+                    $("#uomModelError").html("<b>UOM Model cannot be empty.</b>");
+                    $("#uomModelError").css('color',"red");
+                    uomModelError=false;
+                }
+                else if(!exp.test(uom_model)){
+                	$("#uomModelError").show();
+                    $("#uomModelError").html("<b>UOM Model must be 4–8 uppercase letters. Only spaces and hyphens are allowed.</b>");
+                    $("#uomModelError").css('color',"red");
+                    uomModelError=false;
+					}
+                else{
+                    $("#uomModelError").hide();
+                    uomModelError=true;
+                }
+            }
+            function validate_description(){
+                var description= $("#description").val();
+                var exp=/^[A-Za-z0-9\.\,\-\s]{10,100}$/;
+                if(description==''){
+                    $("#descriptionError").show();
+                    $("#descriptionError").html("<b>Description cannot be empty.Y</b>");
+                    $("#descriptionError").css('color',"red");
+                    descriptionError=false;
+                }
+                else if(!exp.test(description)){
+                	$("#descriptionError").show();
+                    $("#descriptionError").html("<b>Description must be 10–100 characters long and can only contain letters, numbers, spaces, commas, periods, and hyphens.</b>");
+                    $("#descriptionError").css('color',"red");
+                    descriptionError=false;
+					}
+                else{
+                    $("#descriptionError").hide();
+                    descriptionError=true;
+                }
+            }
+            $("#uomType").change(function(){
+                validate_uomType();
+            });
+            
+            $("#uomModel").keyup(function(){
+                validate_uomModel();
+            });
+            
+            $("#description").keyup(function(){
+                validate_description();
+            });
+            
+            $("#formupdate").submit(function(){
+				validate_uomType();
+                validate_uomModel();
+                validate_description();
+                if(uomModelError && uomTypeError && descriptionError){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+			});
+            
+        });
+    </script>
 </body>
 </html>
