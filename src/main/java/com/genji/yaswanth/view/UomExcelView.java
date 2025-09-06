@@ -13,7 +13,7 @@ import com.genji.yaswanth.model.Uom;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class UomExcelExport extends AbstractXlsxView {
+public class UomExcelView extends AbstractXlsxView {
 
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request,

@@ -14,7 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.genji.yaswanth.model.Uom;
 import com.genji.yaswanth.service.IUomService;
-import com.genji.yaswanth.view.UomExcelExport;
+import com.genji.yaswanth.view.UomExcelView;
+import com.genji.yaswanth.view.UomPdfView;
 
 @Controller
 @RequestMapping("/uom")
@@ -73,8 +74,24 @@ public class UomController {
 	public ModelAndView uomExportToExcel() {
 		ModelAndView mv= new ModelAndView();
 		List<Uom> uomList = service.getAllUoms();
+		
+		if(uomList==null || uomList.isEmpty()) {
+			mv.addObject("message", "NO DATA FOR EXCEL EXPORT");
+			mv.setViewName("UomData");
+		}
+		else {
+			mv.addObject("uomList", uomList);
+			mv.setView(new UomExcelView());
+		}
+		return mv;
+	}
+	
+	@GetMapping("/pdf")
+	public ModelAndView uomExportToPdf() {
+		ModelAndView mv = new ModelAndView();
+		List<Uom> uomList = service.getAllUoms();
 		mv.addObject("uomList", uomList);
-		mv.setView(new UomExcelExport());
+		mv.setView(new UomPdfView());
 		return mv;
 	}
 }
