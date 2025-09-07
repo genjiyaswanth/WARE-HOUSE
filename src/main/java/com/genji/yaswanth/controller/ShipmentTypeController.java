@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.genji.yaswanth.model.ShipmentType;
 import com.genji.yaswanth.service.IShipmentTypeService;
-import com.genji.yaswanth.view.ShipmentTypeExcelView;
 import com.genji.yaswanth.view.ShipmentTypePdfView;
 
 @Controller

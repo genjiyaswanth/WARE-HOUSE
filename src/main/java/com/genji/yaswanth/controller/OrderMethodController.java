@@ -10,19 +10,23 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.genji.yaswanth.model.OrderMethod;
 import com.genji.yaswanth.service.IOrderMethodService;
+import com.genji.yaswanth.view.OrderExcelView;
+import com.genji.yaswanth.view.orderPdfView;
 
 @Controller
-@RequestMapping("/ord")
+@RequestMapping("/order")
 public class OrderMethodController {
 
 	@Autowired
 	private IOrderMethodService service;
 	
 	@GetMapping("/register")
-	public String getRegister() {
+	public String getRegister(Model model) {
+		model.addAttribute("order", new OrderMethod());
 		return "OrderRegister";
 	}
 
@@ -31,6 +35,7 @@ public class OrderMethodController {
 		Integer id=service.save(ord);
 		String message= "Order with id "+id+" saved";
 		model.addAttribute("message", message);
+		model.addAttribute("order", new OrderMethod());
 		return "OrderRegister";
 	}
 	
@@ -65,5 +70,28 @@ public class OrderMethodController {
 		return "OrderData";
 	}
 	
+	@GetMapping("/excel")
+	public ModelAndView orderExportToExcel() {
+		ModelAndView mv =new ModelAndView();
+		List<OrderMethod> orderList = service.getAllOrderMethods();
+		if(orderList == null || orderList.isEmpty()) {
+			mv.addObject("message", "NO DATA FOR EXCEL EXPORT");
+		    mv.setViewName("OrderData");
+		}
+		else {
+			mv.addObject("orderList", orderList);
+			mv.setView(new OrderExcelView());
+		}
+		return mv;
+	}
+	
+	@GetMapping("/pdf")
+	public ModelAndView orderExportToPdf() {
+	    ModelAndView mv =new ModelAndView();
+	    List<OrderMethod> orderList =service.getAllOrderMethods();
+	    mv.addObject("orderList", orderList);
+	    mv.setView(new orderPdfView());
+		return mv;
+	}
 
 }

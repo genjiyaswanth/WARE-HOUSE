@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ShipmentTypeExcelView extends AbstractXlsxView {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

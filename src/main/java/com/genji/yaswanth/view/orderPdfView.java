@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
-import com.genji.yaswanth.model.ShipmentType;
+import com.genji.yaswanth.model.OrderMethod;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
@@ -18,37 +18,36 @@ import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ShipmentTypePdfView extends AbstractPdfView {
+public class orderPdfView extends AbstractPdfView {
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		response.addHeader("Content-Disposition", "attachment;filename=shipment.pdf");
-		List<ShipmentType> shipmentList = (List<ShipmentType>) model.get("shipmentList");
+		response.addHeader("Content-Disposition", "attachment;filename=order.pdf");
+		List<OrderMethod> orderList = (List<OrderMethod>) model.get("orderList");
 		
 		Font titlefont =new Font(Font.TIMES_ROMAN, 22, Font.BOLD, new Color(84,192,247));
 		Paragraph date = new Paragraph(new Date().toString());
-		Paragraph title = new Paragraph("SHIPMENT DETAILS",titlefont);
+		Paragraph title = new Paragraph("ORDER DETAILS",titlefont);
 		title.setSpacingAfter(10.0f);
 		title.setAlignment(Element.ALIGN_CENTER);
 		
 		PdfPTable table =new PdfPTable(6);
 		table.addCell("ID");
-		table.addCell("SHIPMENT MODE");
-		table.addCell("SHIPMENT CODE");
-		table.addCell("ENABLE SHIPMENT");
-		table.addCell("SHIPMENT GRADE");
+		table.addCell("ORDER MODE");
+		table.addCell("ORDER CODE");
+		table.addCell("ORDER TYPE");
+		table.addCell("ORDER ACCEPTED");
 		table.addCell("DESCRIPTION");
 		
-		for(ShipmentType st : shipmentList) {
-			table.addCell(String.valueOf(st.getId()));
-			table.addCell(st.getShipmentMode());
-			table.addCell(st.getShipmentCode());
-			table.addCell(st.getEnableShipment());
-			table.addCell(st.getShipmentGrade());
-			table.addCell(st.getDescription());
+		for(OrderMethod om : orderList) {
+			table.addCell(String.valueOf(om.getId()));
+			table.addCell(om.getOrderMode());
+			table.addCell(om.getOrderCode());
+			table.addCell(om.getOrderType());
+			table.addCell(om.getOrderAccepted().toString());
+			table.addCell(om.getDescription());
 		}
 		
 		document.add(title);
@@ -56,5 +55,7 @@ public class ShipmentTypePdfView extends AbstractPdfView {
 		document.add(date);
 		
 	}
+
+	
 
 }
