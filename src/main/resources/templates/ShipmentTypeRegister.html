@@ -154,8 +154,22 @@
                 shipmentCodeError=false;
             }
             else{
-                $("#shipmentCodeError").hide();
-                shipmentCodeError=true;
+                $.ajax({
+                    url: 'validate-shipmentcode',
+                    data: {'shipmentCode': shipment_code},
+                    success: function(responseText){
+                        if(responseText==''){
+                            $("#shipmentCodeError").hide();
+                            shipmentCodeError=true;
+                        }
+                        else{
+                            $("#shipmentCodeError").show();
+                            $("#shipmentCodeError").html(responseText);
+                            $("#shipmentCodeError").css('color',"red");
+                            shipmentCodeError=false;
+                        }
+                    }
+                });
             }
         }
 

@@ -20,11 +20,11 @@ public class ShipmentType {
 	private Integer id;
 	@Column(name = "shp_mode_col")
 	private String shipmentMode;
-	@Column(name = "shp_code_col")
+	@Column(name = "shp_code_col" , unique = true)
 	private String shipmentCode;
-	@Column(name = "shp_enable_ship_col")
+	@Column(name = "shp_enable_ship_col" )
 	private String enableShipment;
-	@Column(name = "shp_grade_col")
+	@Column(name = "shp_grade_col" )
 	private String shipmentGrade;
 	@Column(name = "shp_description_col")
 	private String description;

@@ -38,15 +38,52 @@
 
                 <div class="row">
                     <div class="col-2">
+                        <label for="userFor">USER CODE</label>
+                    </div>
+                    <div class="col-5">
+                        <input type="text" th:field="*{userCode}" name="userCode" id="userCode" class="form-control" >
+                    </div>
+                    <div class="col-5">
+                        <span id="userCodeError"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
                         <label for="userFor">USER FOR</label>
                     </div>
                     <div class="col-5">
-                        <input type="text" th:field="*{userFor}" name="userFor" id="userFor" readonly>
+                        <input type="text" th:field="*{userFor}" name="userFor" id="userFor" class="form-control" readonly>
                     </div>
                     <div class="col-5">
                         <span id="userForError"></span>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <label for="userEmail">USER EMAIL</label>
+                    </div>
+                    <div class="col-5">
+                        <input type="text" th:field="*{userEmail}" name="userEmail" id="userEmail" class="form-control" >
+                    </div>
+                    <div class="col-5">
+                        <span id="userEmailError"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <label for="userContact">USER CONTACT</label>
+                    </div>
+                    <div class="col-5">
+                        <input type="text" th:field="*{userContact}" name="userContact" id="userContact" class="form-control" >
+                    </div>
+                    <div class="col-5">
+                        <span id="userContactError"></span>
+                    </div>
+                </div>
+
 
                 <div class="row">
                     <div class="col-2">
@@ -72,10 +109,22 @@
                         <label for="ifOther">IF OTHER *</label>
                     </div>
                     <div class="col-5">
-                        <input type="text" th:field="*{ifOther}" name="ifOther" id="ifOther">
+                        <input type="text" th:field="*{ifOther}" name="ifOther" id="ifOther" class="form-control">
                     </div>
                     <div class="col-5">
                         <span id="ifOtherError"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <label for="idNumber">USER ID NUMBER</label>
+                    </div>
+                    <div class="col-5">
+                        <input type="text" th:field="*{idNumber}" name="idNumber" id="idNumber" class="form-control" >
+                    </div>
+                    <div class="col-5">
+                        <span id="idNumberError"></span>
                     </div>
                 </div>
 
@@ -96,9 +145,13 @@
             $("#userIdTypeError").hide();
             $("#ifOtherRow").hide();
             $("#ifOtherError").hide();
+            $("#userCodeError").hide();
+            $("#userEmailError").hide();
             var userTypeError=false;
             var userIdTypeError=false;
             var ifOtherError= true;
+            var userCodeError=false;
+            var userEmailError=false;
             function validate_usertype(){
                 var userLength = $('[name=userType]:checked').length;
                 if(userLength==0){
@@ -162,6 +215,65 @@
                 }
             }
 
+            function validate_userCode(){
+                var userCode= $("#userCode").val();
+                var exp=/^[A-Z\s\-]{4,8}$/
+                if(userCode==''){
+                    $("#userCodeError").show();
+                    $("#userCodeError").html("<b>Please Enter User code</b>");
+                    $("#userCodeError").css('color',"red");
+                    userCodeError=false;
+                }
+                else if(!exp.test(userCode)){
+                    $("#userCodeError").show();
+                    $("#userCodeError").html("<b>User Code must be 4–8 uppercase letters. Only spaces and hyphens are allowed.</b>");
+                    $("#userCodeError").css('color',"red");
+                    userCodeError=false;
+                }
+                else{
+                    $("#userCodeError").hide();
+                    userCodeError=true;
+
+                }
+            }
+
+            function validate_userEmail(){
+                var userEmail= $("#userEmail").val();
+                var exp=/^[A-Za-z0-9\-\.]+\@[a-z]+\.[a-z\.]{2,10}$/
+                if(userEmail==''){
+                    $("#userEmailError").show();
+                    $("#userEmailError").html("<b>Please Enter User EMAIL</b>");
+                    $("#userEmailError").css('color',"red");
+                    userEmailError=false;
+                }
+                else if(!exp.test(userEmail)){
+                    $("#userEmailError").show();
+                    $("#userEmailError").html("<b>Please Enter valid EMAIL</b>");
+                    $("#userEmailError").css('color',"red");
+                    userEmailError=false;
+                }
+                else{
+
+                    $.ajax({
+                        url : 'validate-email',
+                        data : {'email' : userEmail},
+                        success: function(responseTxt){
+                            if(responseTxt==''){
+                                $("#userEmailError").hide();
+                                userEmailError=true;
+                            }
+                            else{
+                                $("#userEmailError").show();
+                                $("#userEmailError").html("<b>Email already exists</b>");
+                                $("#userEmailError").css('color',"red");
+                                userEmailError=false;
+                            }
+                        }
+                    })
+
+                }
+            }
+
             $('[name=userType]').change(function(){
 
                 validate_usertype();
@@ -175,24 +287,34 @@
             });
 
             $("#ifOther").keyup(function(){
-            $("#ifOther").val($("#ifOther").val().toUpperCase())
+                $("#ifOther").val($("#ifOther").val().toUpperCase())
                 validate_ifOther();
             });
 
+            $("#userCode").keyup(function(){
+                $("#userCode").val($("#userCode").val().toUpperCase());
+                validate_userCode();
+            });
+
+            $("#userEmail").keyup(function(){
+                validate_userEmail();
+            });
+
             $("#formsubmit").submit(function(){
-            validate_usertype();
-            validate_userIdType();
-            validate_ifOther();
-            if(userTypeError && userIdTypeError && ifOtherError){
-				console.log(userTypeError)
-				console.log(userIdTypeError)
-				console.log(ifOtherError)
-                return true;
-            }
-            else{
-                return false
-            }
-        });
+                validate_usertype();
+                validate_userIdType();
+                validate_ifOther();
+                validate_userCode();
+                validate_userEmail();
+                if(userTypeError && userIdTypeError && ifOtherError && userCodeError && userEmailError){
+                    
+                    return true;
+                }
+                else{
+                    return false
+                }
+            });
+
 
         });
 

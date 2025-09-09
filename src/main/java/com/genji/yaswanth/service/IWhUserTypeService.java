@@ -15,5 +15,7 @@ public interface IWhUserTypeService {
 	public void deleteWhUser(Integer id);
 
 	public void updateWhUser(WhUserType wh);
+	
+	public boolean isUserEmailExist(String email);
 
 }

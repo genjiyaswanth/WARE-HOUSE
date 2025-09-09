@@ -10,11 +10,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.genji.yaswanth.model.ShipmentType;
 import com.genji.yaswanth.service.IShipmentTypeService;
+import com.genji.yaswanth.util.ShipmentTypeUtil;
 import com.genji.yaswanth.view.ShipmentTypePdfView;
+
+import jakarta.servlet.ServletContext;
 
 @Controller
 @RequestMapping("/st")
@@ -22,6 +26,12 @@ public class ShipmentTypeController {
 
 	@Autowired
 	private IShipmentTypeService service;
+	
+	@Autowired
+	private ServletContext sc;
+	
+	@Autowired
+	private ShipmentTypeUtil util;
 
 	@GetMapping("/register")
 	public String showRegister(Model model) {
@@ -92,6 +102,24 @@ public class ShipmentTypeController {
 	    mv.addObject("shipmentList", shipmentList);
 	    mv.setView(new ShipmentTypePdfView());
 		return mv;
+	}
+	
+	@GetMapping("/validate-shipmentcode")
+	public @ResponseBody String validateShipmenCode(String shipmentCode) {
+		String message= "";
+		if(service.isShipmentCodeExist(shipmentCode)) {
+			message= "Shipment Code "+shipmentCode+" already exists";
+		}
+		return message;
+	}
+	
+	@GetMapping("/charts")
+	public String getShipmentTypeCharts() {
+		List<Object[]>data =service.getShipmentModeAndCount();
+		String path=sc.getRealPath("/");
+		util.getShipmentModePieChart(path, data);
+		util.getShipmentModeBarChart(path, data);
+		return "ShipmentTypeCharts";
 	}
 	
 	

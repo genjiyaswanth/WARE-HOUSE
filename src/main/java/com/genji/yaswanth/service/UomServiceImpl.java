@@ -52,4 +52,20 @@ public class UomServiceImpl implements IUomService {
 		return uom;
 	}
 
+	@Override
+	public boolean isUomModelExist(String uomModel) {
+		
+		return repo.getUomModelCount(uomModel)>0?true:false;
+	}
+
+	@Override
+	public List<Object[]> getUomTypeAndCount() {
+
+		return repo.getUomTypeAndCount();
+	}
+
+	
+
+	
+
 }

@@ -54,4 +54,16 @@ public class ShipmentTypeServiceImpl implements IShipmentTypeService {
 		return repo.findAll();
 	}
 
+	@Override
+	public boolean isShipmentCodeExist(String shipmentCode) {
+		
+		return repo.getShipmentCodeCount(shipmentCode)>0?true:false;
+	}
+
+	@Override
+	public List<Object[]> getShipmentModeAndCount() {
+		
+		return repo.getShipmentModeAndCount();
+	}
+
 }

@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.genji.yaswanth.model.Uom;
 import com.genji.yaswanth.service.IUomService;
+import com.genji.yaswanth.util.UomUtil;
 import com.genji.yaswanth.view.UomExcelView;
 import com.genji.yaswanth.view.UomPdfView;
+
+import jakarta.servlet.ServletContext;
 
 @Controller
 @RequestMapping("/uom")
@@ -23,6 +27,12 @@ public class UomController {
 
 	@Autowired
 	private IUomService service;
+	
+	@Autowired
+	private UomUtil util;
+	
+	@Autowired
+	private ServletContext sc;
 
 	@GetMapping("/register")
 	public String showRegister(Model model) {
@@ -93,5 +103,24 @@ public class UomController {
 		mv.addObject("uomList", uomList);
 		mv.setView(new UomPdfView());
 		return mv;
+	}
+	
+	@GetMapping("/validate-uommodel")
+	public @ResponseBody String validateUomModle(String uomModel) {
+		String message ="";
+		if(service.isUomModelExist(uomModel)) {
+			message="Uom model"+uomModel+" already exists";
+		}
+
+		return message;
+	}
+	
+	@GetMapping("/charts")
+	public String showCharts() {
+		List<Object[]> data =service.getUomTypeAndCount();
+		String path=sc.getRealPath("/");
+		util.geteratePieChart(path, data);
+		util.generateBarChart(path, data);
+		return "UomCharts";
 	}
 }

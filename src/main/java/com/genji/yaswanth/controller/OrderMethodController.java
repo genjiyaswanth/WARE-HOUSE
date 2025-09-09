@@ -57,7 +57,7 @@ public class OrderMethodController {
 	
 	@GetMapping("/edit")
 	public String editOrder(@RequestParam Integer id, Model model) {
-		model.addAttribute("order", service.getOneOrderMethod(id));
+		model.addAttribute("order", service.getOneOrderMethod(id) );
 		return "OrderEdit";
 	}
 	

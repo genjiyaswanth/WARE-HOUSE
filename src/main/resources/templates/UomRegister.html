@@ -106,8 +106,22 @@
                     uomModelError=false;
 					}
                 else{
-                    $("#uomModelError").hide();
-                    uomModelError=true;
+					$.ajax({
+                        url:'validate-uommodel',
+                        data:{'uomModel': uom_model},
+                        success: function(responseText){
+                            if(responseText==''){
+                                $("#uomModelError").hide();
+                                uomModelError=true;
+                            }
+                            else{
+                                $("#uomModelError").show();
+                                $("#uomModelError").html(responseText);
+                                $("#uomModelError").css('color',"red");
+                                uomModelError=false;
+                            }
+                        }
+                    });
                 }
             }
             function validate_description(){

@@ -55,4 +55,10 @@ public class WhUserTypeServiceImpl implements IWhUserTypeService {
 
 	}
 
+	@Override
+	public boolean isUserEmailExist(String email) {
+		
+		return repo.getEmailCount(email)>0?true:false;
+	}
+
 }

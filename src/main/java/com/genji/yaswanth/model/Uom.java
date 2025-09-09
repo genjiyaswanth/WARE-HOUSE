@@ -20,7 +20,7 @@ public class Uom {
 	private Integer id;
 	@Column(name = "uom_type_col")
 	private String uomType;
-	@Column(name = "uom_model_col")
+	@Column(name = "uom_model_col" , unique = true)
 	private String uomModel;
 	@Column(name = "uom_description_col")
 	private String description;

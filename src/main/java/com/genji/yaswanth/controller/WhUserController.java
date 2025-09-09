@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.genji.yaswanth.model.WhUserType;
 import com.genji.yaswanth.service.IWhUserTypeService;
+import com.genji.yaswanth.util.EmailUtil;
 
 @Controller
 @RequestMapping("/whuser")
@@ -19,6 +22,8 @@ public class WhUserController {
 
 	@Autowired
 	private IWhUserTypeService service;
+	@Autowired
+	private EmailUtil emailUtil;
 	
 	@GetMapping("/register")
 	public String showRegister(Model model) {
@@ -30,6 +35,22 @@ public class WhUserController {
 	public String saveWhUser(@ModelAttribute WhUserType wh , Model model) {
 		Integer id = service.save(wh);
 		String message = "WhUser saved with id:" + id;
+	
+		if(id!=null && id>0) {
+			new Thread(new Runnable() {
+				public void run() {
+					boolean isEmailSent=emailUtil.sendEmail(wh.getUserEmail(), "WELCOME TO WHUSER", "Please use this id:"+wh.getUserCode());
+					if(isEmailSent) {
+						System.out.println("Mail Sent Successfully");
+					}
+					else {
+						System.out.println("Failed To Send The Email");
+					}
+				}
+				
+			}).start();
+		}
+		
 		model.addAttribute("message", message );
 		model.addAttribute("whuser" , new WhUserType());
 		return "WhUserRegister";
@@ -63,6 +84,15 @@ public class WhUserController {
 		model.addAttribute("message", message);
 		model.addAttribute("whuser", service.getAllWhUsers());
 		return "WhUserData";
+	}
+	
+	@GetMapping("validate-email")
+	public @ResponseBody String validateEmail(@RequestParam String email) {
+		String message="";
+		if(service.isUserEmailExist(email)) {
+			message="User with '"+email+"' already exist";
+		}
+		return message;
 	}
 	
 	

@@ -15,4 +15,8 @@ public interface IShipmentTypeService {
 	public ShipmentType getOneShipmentType(Integer id);
 
 	public List<ShipmentType> getAllShipmentTypes();
+	
+	public boolean isShipmentCodeExist(String shipmentCode);
+	
+	public List<Object[]> getShipmentModeAndCount();
 }
