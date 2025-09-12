@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.genji.yaswanth.model.WhUserType;
 import com.genji.yaswanth.service.IWhUserTypeService;
 import com.genji.yaswanth.util.EmailUtil;
+import com.genji.yaswanth.view.WhUserTypeExcelView;
+import com.genji.yaswanth.view.WhUserTypePdfView;
 
 @Controller
 @RequestMapping("/whuser")
@@ -95,6 +98,35 @@ public class WhUserController {
 		return message;
 	}
 	
+	@GetMapping("excel")
+	public ModelAndView getWhUserTypeExcelExport() {
+		ModelAndView mv = new ModelAndView();
+		List<WhUserType> whuserList = service.getAllWhUsers();
+		if(whuserList==null || whuserList.isEmpty()) {
+			mv.addObject("message","NO DATA FOR EXCEL EXPORT");
+			mv.setViewName("WhUserData");
+		}
+		else {
+			mv.addObject("whuserList",whuserList);
+			mv.setView(new WhUserTypeExcelView());
+		}
+		return mv;
+	}
+	
+	@GetMapping("/pdf")
+	public ModelAndView getWHUserTypePdfExport() {
+		ModelAndView mv = new ModelAndView();
+		List<WhUserType> whuserType = service.getAllWhUsers();
+		if(whuserType==null || whuserType.isEmpty()) {
+			mv.addObject("message", "NO DATA FOR PDF EXPORT");
+			mv.setViewName("WhUserData");
+		}
+		else {
+			mv.addObject("whuserList",whuserType);
+			mv.setView(new WhUserTypePdfView());
+		}
+		return mv;
+	}
 	
 	
 }

@@ -1,6 +1,7 @@
 package com.genji.yaswanth.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.genji.yaswanth.exceptions.ShipmentTypeNotFoundException;
 import com.genji.yaswanth.model.ShipmentType;
 import com.genji.yaswanth.repository.ShipmentTypeRepository;
+import com.genji.yaswanth.util.CollectionUtil;
 
 @Service
 public class ShipmentTypeServiceImpl implements IShipmentTypeService {
@@ -64,6 +66,13 @@ public class ShipmentTypeServiceImpl implements IShipmentTypeService {
 	public List<Object[]> getShipmentModeAndCount() {
 		
 		return repo.getShipmentModeAndCount();
+	}
+
+	@Override
+	public Map<Integer, String> getShipmentTypeIdAndCodeByEnabled(String isEnabled) {
+		List<Object[]> list = repo.getShipmentTypeIdAndCodeByEnabled(isEnabled);
+		Map<Integer, String> map = CollectionUtil.convertListToMap(list);
+		return map;
 	}
 
 }

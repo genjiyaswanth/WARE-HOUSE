@@ -1,6 +1,7 @@
 package com.genji.yaswanth.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.genji.yaswanth.exceptions.WhUserNotFoundException;
 import com.genji.yaswanth.model.WhUserType;
 import com.genji.yaswanth.repository.WhUserTypeRepository;
+import com.genji.yaswanth.util.CollectionUtil;
 
 @Service
 public class WhUserTypeServiceImpl implements IWhUserTypeService {
@@ -59,6 +61,13 @@ public class WhUserTypeServiceImpl implements IWhUserTypeService {
 	public boolean isUserEmailExist(String email) {
 		
 		return repo.getEmailCount(email)>0?true:false;
+	}
+
+	@Override
+	public Map<Integer, String> getWhuserTypeIdAndCodeByUserType(String userType) {
+		List<Object[]> list = repo.getWhuserTypeIdAndCodeByUserType(userType);
+		Map<Integer,String> map = CollectionUtil.convertListToMap(list);
+		return map;
 	}
 
 }

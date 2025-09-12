@@ -28,8 +28,8 @@
                         <label for="userType">USER TYPE</label>
                     </div>
                     <div class="col-5">
-                        <input class="form-check-input" type="radio" th:field="*{userType}" name="userType" value="Vendor">Vendor
-                        <input class="form-check-input" type="radio" th:field="*{userType}" name="userType" value="Customer">Customer
+                        <input class="form-check-input" type="radio" th:field="*{userType}" name="userType" value="VENDOR">Vendor
+                        <input class="form-check-input" type="radio" th:field="*{userType}" name="userType" value="CUSTOMER">Customer
                     </div>
                     <div class="col-5">
                         <span id="userTypeError"></span>
@@ -147,11 +147,15 @@
             $("#ifOtherError").hide();
             $("#userCodeError").hide();
             $("#userEmailError").hide();
+            $("#idNumberError").hide();
+            $("#userContactError").hide();
             var userTypeError=false;
             var userIdTypeError=false;
             var ifOtherError= true;
             var userCodeError=false;
             var userEmailError=false;
+            var idNumberError=false;
+            var userContactError=false;
             function validate_usertype(){
                 var userLength = $('[name=userType]:checked').length;
                 if(userLength==0){
@@ -273,6 +277,34 @@
 
                 }
             }
+            
+            function validate_idNumber(){
+                var idNumber = $("#idNumber").val();
+                if(idNumber==''){
+                    $("#idNumberError").show();
+                    $("#idNumberError").html("<b>Please enter ID Number</b>");
+                    $("#idNumberError").css('color',"red");
+                    idNumberError=false;
+                }
+                else{
+                    $("#idNumberError").hide();
+                    idNumberError=true;
+                }
+            }
+
+            function validate_userContact(){
+                var userContact = $("#userContact").val();
+                if(userContact==''){
+                    $("#userContactError").show();
+                    $("#userContactError").html("<b>Please enter Contact Information</b>");
+                    $("#userContactError").css('color',"red");
+                    userContactError=false;
+                }
+                else{
+                    $("#userContactError").hide();
+                    userContactError=true;
+                }
+            }
 
             $('[name=userType]').change(function(){
 
@@ -300,13 +332,23 @@
                 validate_userEmail();
             });
 
+            $("#idNumber").keyup(function(){
+                validate_idNumber();
+            });
+
+            $("#userContact").keyup(function(){
+                validate_userContact();
+            });
+
             $("#formsubmit").submit(function(){
                 validate_usertype();
                 validate_userIdType();
                 validate_ifOther();
                 validate_userCode();
                 validate_userEmail();
-                if(userTypeError && userIdTypeError && ifOtherError && userCodeError && userEmailError){
+                validate_idNumber();
+                validate_userContact();
+                if(userTypeError && userIdTypeError && ifOtherError && userCodeError && userEmailError && idNumberError && userContactError){
                     
                     return true;
                 }

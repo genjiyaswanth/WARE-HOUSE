@@ -1,6 +1,8 @@
 package com.genji.yaswanth.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.genji.yaswanth.exceptions.UomNotFoundException;
 import com.genji.yaswanth.model.Uom;
 import com.genji.yaswanth.repository.UomRepository;
+import com.genji.yaswanth.util.CollectionUtil;
 
 @Service
 public class UomServiceImpl implements IUomService {
@@ -62,6 +65,13 @@ public class UomServiceImpl implements IUomService {
 	public List<Object[]> getUomTypeAndCount() {
 
 		return repo.getUomTypeAndCount();
+	}
+
+	@Override
+	public Map<Integer, String> getUomIdAndModel() {
+		List<Object[]> list = repo.getUomIdAndModel();
+		Map<Integer,String> map = CollectionUtil.convertListToMap(list);
+		return map;
 	}
 
 	

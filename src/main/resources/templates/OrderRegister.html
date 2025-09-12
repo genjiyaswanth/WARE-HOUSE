@@ -140,7 +140,7 @@
 
         function validate_orderCode(){
             var orderCode= $("#orderCode").val();
-            var exp = /^[A-Z\-\s]{4,12}$/
+            var exp = /^[A-Z\-\s]{4,12}$/;
             if(orderCode==''){
                 $("#orderCodeError").show();
                 $("#orderCodeError").html("<b>Order Code cannot be empty.</b>");
@@ -154,8 +154,23 @@
                 orderCodeError=false;
             }
             else{
-                $("#orderCodeError").hide();
-                orderCodeError=true;
+				$.ajax({
+                    url:'validate-code',
+                    data:{'orderCode':orderCode},
+                    success:function(responseText){
+                        if(responseText==''){
+                            $("#orderCodeError").hide();
+                            orderCodeError=true;
+                        }
+                        else{
+                            $("#orderCodeError").show();
+                            $("#orderCodeError").html(responseText);
+                            $("#orderCodeError").css('color',"red");
+                            orderCodeError=false;
+                        }
+                    }
+                })
+                
             }
         }
 
@@ -216,8 +231,8 @@
             });
 
             $("#orderCode").keyup(function(){
-            $("#orderCode").val($("#orderCode").val().toUpperCase())
-            validate_orderCode();
+            	$("#orderCode").val($("#orderCode").val().toUpperCase())
+            	validate_orderCode();
             });
 
             $("#orderType").change(function(){

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-success text-white text-center">
+				<h3>Purchase Order Register Page</h3>
+			</div>
+			<div class="card-body bg-light">
+				<form th:action="@{/po/save}" method="post" th:object="${purchaseorder}"
+					id="formsubmit">
+
+					<div class="row">
+						<div class="col-2">
+							<label for="purchaseOrderCode">ORDER CODE</label>
+						</div>
+						<div class="col-5">
+							<input type="text" th:field="*{purchaseOrderCode}" id="purchaseOrderCode"
+								class="form-control" />
+						</div>
+						<div class="col-5">
+							<span id="purchaseOrderCodeError"></span>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-2">
+							<label for="shipmentCode">SHIPMENT CODE</label>
+						</div>
+						<div class="col-5">
+							<select th:field="*{shipmentType.id}" id="shipmentCode"
+								class="form-control">
+								<option value="">--SELECT--</option>
+								<option th:each="ob:${shipmentcode}" th:value="${ob.key}" th:text="${ob.value}"></option>
+							</select>
+						</div>
+						<div class="col-5">
+							<span id="shipmentCodeCodeError"></span>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-2">
+							<label for="whUserCode">WHUSER CODE</label>
+						</div>
+						<div class="col-5">
+							<select th:field="*{vendor.id}" id="vendorId"
+								class="form-control">
+								<option value="">--SELECT--</option>
+								<option th:each="ob:${whuser}" th:value="${ob.key}" th:text="${ob.value}"></option>
+							</select>
+						</div>
+						<div class="col-5">
+							<span id="vendorError"></span>
+						</div>
+					</div>
+					
+					
+					
+					<div class="row">
+						<div class="col-2">
+							<label for="referenceNumber">REFERENCE NUMBER</label>
+						</div>
+						<div class="col-5">
+							<input type="text" th:field="*{referenceNumber}" id="referenceNumber"
+								class="form-control" />
+						</div>
+						<div class="col-5">
+							<span id="referenceNumberError"></span>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-2">
+							<label for="qualityCheck">QUALITY CHECK</label>
+						</div>
+						<div class="col-5">
+							<input class="form-check-input" type="radio"
+								th:field="*{qualityCheck}" name="qualityCheck" value="REQUIRED">Required
+							<input class="form-check-input" type="radio"
+								th:field="*{qualityCheck}" name="qualityCheck" value="NOT REQUIRED">Not Required
+						</div>
+						<div class="col-5">
+							<span id="qualityCheckError"></span>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-2">
+							<label for="status">DEFAULT STATUS</label>
+						</div>
+						<div class="col-5">
+							<input type="text" th:field="*{status}" id="status"
+								class="form-control" th:value="OPEN" readonly="readonly"  />
+						</div>
+						<div class="col-5">
+							<span id="statusError"></span>
+						</div>
+					</div>
+					
+					<div class="row">
+                        <div class="col-2">
+                            <label for="description">DESCRIPTION</label>
+                        </div>
+                        <div class="col-5">
+                            <textarea rows="" cols="" th:field="*{description}" class="form-control"></textarea>
+                        </div>
+                        <div class="col-5">
+                            <span id="descriptionError"></span>
+                        </div>
+                    </div>
+                    
+                    
+					
+					<input type="submit" value="ADD PURCHASE ORDER" class=" btn btn-success" />
+				</form>
+			</div>
+			<div class="card-footer text-center" th:if="${message}">
+				<span th:text="${message}" class="alert-info"></span>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

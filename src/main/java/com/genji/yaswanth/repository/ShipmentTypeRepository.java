@@ -15,4 +15,7 @@ public interface ShipmentTypeRepository extends JpaRepository<ShipmentType, Inte
 	@Query("SELECT s.shipmentMode , COUNT(s.shipmentMode) FROM ShipmentType s group by s.shipmentMode")
 	public List<Object[]> getShipmentModeAndCount();
 	
+	@Query("SELECT st.id , st.shipmentCode FROM ShipmentType st WHERE st.enableShipment=:isEnabled")
+	public List<Object[]> getShipmentTypeIdAndCodeByEnabled(String isEnabled);
+	
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.genji.yaswanth.model.OrderMethod;
@@ -92,6 +93,15 @@ public class OrderMethodController {
 	    mv.addObject("orderList", orderList);
 	    mv.setView(new orderPdfView());
 		return mv;
+	}
+	
+	@GetMapping("/validate-code")
+	public @ResponseBody String validateOrderCode(@RequestParam String orderCode) {
+		String message="";
+		if(service.isOrderCodeExist(orderCode)) {
+			message="Order Code Already Exist";
+		}
+		return message;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.genji.yaswanth.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.genji.yaswanth.exceptions.OrderMethodNotFoundException;
 import com.genji.yaswanth.model.OrderMethod;
 import com.genji.yaswanth.repository.OrderMethodRepository;
+import com.genji.yaswanth.util.CollectionUtil;
 
 @Service
 public class OrderMethodImpl implements IOrderMethodService {
@@ -51,6 +53,19 @@ public class OrderMethodImpl implements IOrderMethodService {
 			throw new OrderMethodNotFoundException("Order with id "+id+" not exists");
 		}
 		return ord;
+	}
+
+	@Override
+	public boolean isOrderCodeExist(String orderCode) {
+		
+		return repo.getOrderCodeCount(orderCode)>0;
+	}
+
+	@Override
+	public Map<Integer, String> getOrderMethodIdAndCodeByMode(String mode) {
+		List<Object[]> list = repo.getOrderMethodIdAndCodeByMode(mode);
+		Map<Integer,String> map = CollectionUtil.convertListToMap(list);
+		return map;
 	}
 
 }

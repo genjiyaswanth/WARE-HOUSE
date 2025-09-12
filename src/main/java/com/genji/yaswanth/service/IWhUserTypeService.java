@@ -1,6 +1,7 @@
 package com.genji.yaswanth.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.genji.yaswanth.model.WhUserType;
 
@@ -17,5 +18,7 @@ public interface IWhUserTypeService {
 	public void updateWhUser(WhUserType wh);
 	
 	public boolean isUserEmailExist(String email);
+	
+	public Map<Integer,String> getWhuserTypeIdAndCodeByUserType(String userType);
 
 }

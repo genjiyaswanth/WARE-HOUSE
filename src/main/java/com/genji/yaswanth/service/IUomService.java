@@ -1,6 +1,7 @@
 package com.genji.yaswanth.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.genji.yaswanth.model.Uom;
 
@@ -18,5 +19,7 @@ public interface IUomService {
 
 	public boolean isUomModelExist(String uomModel);
 	
-	List<Object[]> getUomTypeAndCount();
+	public List<Object[]> getUomTypeAndCount();
+	
+	public Map<Integer,String> getUomIdAndModel();
 }
