@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-success text-white text-center">
+				<h3>PURCHASE ORDER DATA PAGE</h3>
+			</div>
+			<div class="card-body bg-light">
+				<a th:href="@{/po/excel}" class="btn btn-warning">EXCEL EXPORT</a> <a
+					th:href="@{/po/pdf}" class="btn btn-warning">PDF EXPORT</a>
+				<table class="table table-hover text-center">
+					<tr class="bg-info text-white">
+						<th>ID</th>
+						<th>CODE</th>
+						<th>STATUS</th>
+						<th>SHIPMENT</th>
+						<th>VENDOR</th>
+						<th>OPERATION</th>
+					</tr>
+					<tr th:each="ob:${list}">
+						<td th:text="${ob.id}"></td>
+						<td th:text="${ob.purchaseOrderCode}"></td>
+						<td th:text="${ob.status}"></td>
+						<td th:text="${ob.shipmentType.shipmentCode}"></td>
+						<td th:text="${ob.vendor.userCode}"></td>
+						<td><a class="btn btn-danger w-50" th:if="${ob.status=='PICKING' || ob.status=='OPEN'}"
+							th:href="@{/po/parts?id={data}(data=${ob.id})}" >ADD PART</a> 
+							
+							<a class="btn btn-danger w-50" th:if="${ob.status=='ORDERED'}"
+							th:href="@{/po/generateinvoice?id={data}(data=${ob.id})}" >GENERATE INVOICE</a>
+							
+							<a class="btn btn-danger w-50" th:if="${ob.status=='INVOICED'}"
+							th:href="@{/po/printinvoice?id={data}(data=${ob.id})}" >PRINT INVOICE</a> 
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="card-footer text-white text-center" th:if="${message}">
+				<span th:text="${message}" class="alert-info"></span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

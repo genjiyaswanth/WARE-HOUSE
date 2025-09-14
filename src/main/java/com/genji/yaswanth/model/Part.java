@@ -35,6 +35,9 @@ public class Part {
 	@Column(name="part_currency_col")
 	private String partCurrency;
 	
+	@Column(name="part_gstslob_col")
+	private Double gstSlob;
+	
 	@ManyToOne
 	@JoinColumn(name="uom_id_fk")
 	private Uom uom;

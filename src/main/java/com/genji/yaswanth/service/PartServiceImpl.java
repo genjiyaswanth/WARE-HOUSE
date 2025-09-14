@@ -1,6 +1,7 @@
 package com.genji.yaswanth.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.genji.yaswanth.exceptions.PartNotFountException;
 import com.genji.yaswanth.model.Part;
 import com.genji.yaswanth.repository.PartRepository;
+import com.genji.yaswanth.util.CollectionUtil;
 @Service
 public class PartServiceImpl implements IPartService {
 
@@ -51,6 +53,13 @@ public class PartServiceImpl implements IPartService {
 	@Override
 	public void updatePart(Part p) {
 		repo.save(null);
+	}
+
+	@Override
+	public Map<Integer, String> getPartIdAAndCode() {
+		List<Object[]> list = repo.getPartIdAndCode();
+		Map<Integer,String> map =CollectionUtil.convertListToMap(list);
+		return map;
 	}
 
 }

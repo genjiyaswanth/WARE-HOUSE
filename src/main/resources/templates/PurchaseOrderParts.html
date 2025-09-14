@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <div class="container">
+        <div class="card-header bg-success text-white text-center">
+            <h2>Purchase Parts Page</h2>
+        </div>
+        <div class="card-body bg-light">
+        
+        		<div class="row">
+                    <div class="col-6">
+                        <div class=row>
+                        	<div class=col-4 ></div>
+                        	<div class=col-4>ORDER CODE : <span th:text="${po.purchaseOrderCode}" class="text-danger"></span>  </div>
+                        	<div class=col-4 ></div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-6">
+                        <div class=row>
+                        	<div class=col-4 ></div>
+                        	<div class=col-4>STATUS : <span th:text="${po.status}" class="text-danger"></span> </div>
+                        	<div class=col-4 ></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form th:action="@{/po/add}" method="post" th:object="${pd}" class="mt-5"
+                 th:if="${po.status=='PICKING' || po.status=='OPEN'}">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="">CHOOSE PART</label>
+                                </div>
+                                <div class="col-4" >
+                                    <select th:field="*{part.id}" class="form-control">
+                                        <option value="">--SELECT--</option>
+                                        <option th:each="ob:${parts}" th:value="${ob.key}" th:text="${ob.value}"></option>
+							        </select>
+                                </div>
+                                <div class="col-4">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="">QUANTITY</label>
+                                </div>
+                                <div class="col-4" >
+                                    <input type="text" th:field="*{quantity}" id="quantity" class="form-control" />
+                                </div>
+                                <div class="col-4">
+
+                                </div>
+                                <input type="hidden" name="purchaseOrder.id" th:value="${po.id}" />
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <input type="submit" value="ADD" class=" btn btn-success" />
+                        </div>
+                    </div>
+                </form>
+                
+                <table class="table table-hover text-center mt-5" >
+					<tr class="bg-info text-white">
+						<th>SL No</th>
+						<th>ITEM CODE</th>
+						<th>BASE COST</th>
+						<th>QUANTITY</th>
+						<th>TOTAL</th>
+						<th th:if="${po.status=='PICKING' || po.status=='OPEN'}">OPERATION</th>
+					</tr>
+					<tr th:each="ob,i:${purchasedetails}">
+						<td th:text="${i.count}"></td>
+						<td th:text="${ob.part.id}"></td>
+						<td th:text="${ob.part.partCost}"></td>
+						<td th:text="${ob.quantity}"></td>
+						<td th:text="${ob.part.partCost * ob.quantity}" ></td>
+						<td th:if="${po.status=='PICKING' || po.status=='OPEN'}">
+							<a class="btn btn-danger"
+							th:href="@{/po/remove(detailid=${ob.id}, purchaseorderid=${po.id})}">REMOVE
+							</a>
+						</td>
+					</tr>
+				</table>
+                <a th:if="${po.status=='PICKING'}" class="btn btn-danger"
+   							th:href="@{/po/confirmorder(orderid=${po.id})}">PLACE ORDER</a>
+        </div>
+    </div>
+
+</body>
+</html>
