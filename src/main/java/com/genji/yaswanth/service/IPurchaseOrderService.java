@@ -1,6 +1,7 @@
 package com.genji.yaswanth.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.genji.yaswanth.model.PurchaseDetails;
 import com.genji.yaswanth.model.PurchaseOrder;
@@ -28,6 +29,8 @@ public interface IPurchaseOrderService {
 	public void updateStatus(Integer purchaseOrderId, String status);
 
 	public Integer getDetailsCountByOrderId(Integer purchaseorderid);
+	
+	public Map<Integer,String> getPurchaseOrderIdAndCodeWithInvoicedForGrn(String status);
 
 	
 }

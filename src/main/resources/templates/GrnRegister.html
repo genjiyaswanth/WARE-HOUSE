@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-success text-white text-center">
+                <h3>GRN Register Page</h3>
+            </div>
+            <div class="card-body bg-light">
+                <form th:action="@{/grn/save}" method="post" th:object="${grn}" id="formsubmit">
+
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="grnCode">GRN CODE</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="text" th:field="*{grnCode}" class="form-control" />
+                        </div>
+                        <div class="col-5">
+                            <span id="grnCodeError"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="grnType">GRN TYPE</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="text" th:field="*{grnType}" class="form-control" />
+                        </div>
+                        <div class="col-5">
+                            <span id="grnTypeError"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+						<div class="col-2">
+							<label for="">PURCHASE ORDER</label>
+						</div>
+						<div class="col-5">
+							
+							<select th:field="*{purchaseOrder.id}" id="purchaseOrderId"
+								class="form-control">
+								<option value="">--SELECT--</option>
+								<option th:each="ob:${po}" th:value="${ob.key}" th:text="${ob.value}"></option>
+							</select>
+						</div>
+						<div class="col-5">
+							<span id="purchaseOrderIdError"></span>
+						</div>
+					</div>
+                    
+
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="description">DESCRIPTION</label>
+                        </div>
+                        <div class="col-5">
+                            <textarea rows="" cols="" th:field="*{description}" class="form-control"></textarea>
+                        </div>
+                        <div class="col-5">
+                            <span id="descriptionError"></span>
+                        </div>
+                    </div>
+                      
+                      <input type="submit" value="ADD GRN" class=" btn btn-success" />
+                </form>
+
+            </div>
+            <div class="card-footer text-center" th:if="${message}">
+    			<span th:text="${message}" class="alert-info"></span>
+			</div>
+        </div>
+    </div>
+
+</body>
+</html>

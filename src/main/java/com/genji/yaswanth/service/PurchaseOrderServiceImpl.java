@@ -1,6 +1,7 @@
 package com.genji.yaswanth.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.genji.yaswanth.model.PurchaseDetails;
 import com.genji.yaswanth.model.PurchaseOrder;
 import com.genji.yaswanth.repository.PurchaseDetailsRepository;
 import com.genji.yaswanth.repository.PurchaseOrderRepository;
+import com.genji.yaswanth.util.CollectionUtil;
 
 @Service
 public class PurchaseOrderServiceImpl implements IPurchaseOrderService {
@@ -107,5 +109,13 @@ public class PurchaseOrderServiceImpl implements IPurchaseOrderService {
 		
 		return detailsRepo.getDetailsCountByOrderId(purchaseorderid);
 	}
+
+	@Override
+	public Map<Integer,String> getPurchaseOrderIdAndCodeWithInvoicedForGrn(String status) {
+		List<Object[]> list = repo.getPurchaseOrderIdAndCodeWithInvoicedForGrn(status);
+		Map<Integer,String> map = CollectionUtil.convertListToMap(list);
+		return map;
+	}
+
 
 }
