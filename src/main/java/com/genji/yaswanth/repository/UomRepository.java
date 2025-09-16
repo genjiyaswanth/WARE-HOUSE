@@ -2,6 +2,8 @@ package com.genji.yaswanth.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,5 +19,8 @@ public interface UomRepository extends JpaRepository<Uom, Integer> {
 	
 	@Query("SELECT u.id , u.uomModel FROM Uom u")
 	public List<Object[]> getUomIdAndModel();
+	
+	
+	public Page<Uom> findByUomModelContaining(String model , Pageable input);
 	
 }

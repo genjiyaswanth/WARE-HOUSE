@@ -1,175 +1,215 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org/">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>UOM Register</title>
+
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        margin-top: 30px;
+    }
+
+    .card-header {
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        background: linear-gradient(90deg, #198754, #20c997);
+    }
+
+    label {
+        font-weight: 500;
+        margin-top: 6px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        box-shadow: none !important;
+        border: 1px solid #ced4da;
+        transition: border 0.2s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #198754;
+        box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.2);
+    }
+
+    .btn-success {
+        border-radius: 8px;
+        padding: 8px 18px;
+        font-weight: 500;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .btn-success:hover {
+        background-color: #157347;
+    }
+
+    .error-text {
+        font-size: 0.9rem;
+        color: red;
+        font-weight: 500;
+    }
+
+    .card-footer {
+        border-top: none;
+        background-color: transparent;
+    }
+</style>
 </head>
 <body>
+
+	<div th:insert="/fragments/commonui :: userlogo"></div>
+	<div th:insert="/fragments/commonui :: userhead"></div>
+	<div th:insert="/fragments/commonui :: usermenu"></div>
+
     <div class="container">
         <div class="card">
-            <div class="card-header bg-success text-white text-center">
-                <h3>UOM Register Page</h3>
+            <div class="card-header text-white text-center">
+                <h3 class="mb-0">UOM Register Page</h3>
             </div>
-            <div class="card-body bg-light">
+            <div class="card-body">
                 <form th:action="@{/uom/save}" method="post" th:object="${uom}" id="formsubmit">
 
-                    <div class="row">
-                        <div class="col-2">
-                            <label for="">UOM TYPE</label>
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label for="uomType">UOM TYPE</label>
                         </div>
-                        <div class="col-5">
-                            <select th:field="*{uomType}" class="form-control">
+                        <div class="col-md-5">
+                            <select id="uomType" th:field="*{uomType}" class="form-control">
                                 <option value="">--SELECT--</option>
                                 <option value="PACKING">PACKING</option>
                                 <option value="NO PACKING">NO PACKING</option>
                                 <option value="NA">NA</option>
-                          </select>
+                            </select>
                         </div>
-                        <div class="col-5">
-                            <span id="uomTypeError"></span>
+                        <div class="col-md-5">
+                            <span id="uomTypeError" class="error-text"></span>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-2">
+                    <div class="row mb-3">
+                        <div class="col-md-2">
                             <label for="uomModel">UOM MODEL</label>
                         </div>
-                        <div class="col-5">
-                            <input type="text" th:field="*{uomModel}" class="form-control" />
+                        <div class="col-md-5">
+                            <input type="text" id="uomModel" th:field="*{uomModel}" class="form-control" />
                         </div>
-                        <div class="col-5">
-                            <span id="uomModelError"></span>
+                        <div class="col-md-5">
+                            <span id="uomModelError" class="error-text"></span>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-2">
+                    <div class="row mb-3">
+                        <div class="col-md-2">
                             <label for="description">DESCRIPTION</label>
                         </div>
-                        <div class="col-5">
-                            <textarea rows="" cols="" th:field="*{description}" class="form-control"></textarea>
+                        <div class="col-md-5">
+                            <textarea rows="3" id="description" th:field="*{description}" class="form-control"></textarea>
                         </div>
-                        <div class="col-5">
-                            <span id="descriptionError"></span>
+                        <div class="col-md-5">
+                            <span id="descriptionError" class="error-text"></span>
                         </div>
                     </div>
                       
-                      <input type="submit" value="ADD UOM" class=" btn btn-success" />
+                    <div class="text-center">
+                        <input type="submit" value="ADD UOM" class="btn btn-success" />
+                    </div>
                 </form>
-
             </div>
+
             <div class="card-footer text-center" th:if="${message}">
-    			<span th:text="${message}" class="alert-info"></span>
-			</div>
+                <span th:text="${message}" class="alert alert-info py-1 px-3"></span>
+            </div>
         </div>
     </div>
 
-    <script>
-        $(document).ready(function(){
-            $("#uomTypeError").hide();
-            $("#uomModelError").hide();
-            $("#descriptionError").hide();
-            var uomTypeError=false;
-            var uomModelError=false;
-            var descriptionError=false;
-            function validate_uomType(){
-                var uom_type= $("#uomType").val();
-                if(uom_type==''){
-                    $("#uomTypeError").show();
-                    $("#uomTypeError").html("<b>Please select a UOM Type</b>");
-                    $("#uomTypeError").css('color',"red");
-                    uomTypeError=false;
-                }
-                else{
-                    $("#uomTypeError").hide();
-                    uomTypeError=true;
-                }
+<script>
+    $(document).ready(function(){
+        $("#uomTypeError, #uomModelError, #descriptionError").hide();
+
+        var uomTypeError=false;
+        var uomModelError=false;
+        var descriptionError=false;
+
+        function validate_uomType(){
+            var uom_type= $("#uomType").val();
+            if(uom_type==''){
+                $("#uomTypeError").show().html("Please select a UOM Type");
+                uomTypeError=false;
             }
-            function validate_uomModel(){
-                var uom_model= $("#uomModel").val();
-                var exp=/^[A-Z\-\s]{4,8}$/;
-                if(uom_model==''){
-                    $("#uomModelError").show();
-                    $("#uomModelError").html("<b>UOM Model cannot be empty.</b>");
-                    $("#uomModelError").css('color',"red");
-                    uomModelError=false;
-                }
-                else if(!exp.test(uom_model)){
-                	$("#uomModelError").show();
-                    $("#uomModelError").html("<b>UOM Model must be 4–8 uppercase letters. Only spaces and hyphens are allowed.</b>");
-                    $("#uomModelError").css('color',"red");
-                    uomModelError=false;
-					}
-                else{
-					$.ajax({
-                        url:'validate-uommodel',
-                        data:{'uomModel': uom_model},
-                        success: function(responseText){
-                            if(responseText==''){
-                                $("#uomModelError").hide();
-                                uomModelError=true;
-                            }
-                            else{
-                                $("#uomModelError").show();
-                                $("#uomModelError").html(responseText);
-                                $("#uomModelError").css('color',"red");
-                                uomModelError=false;
-                            }
+            else{
+                $("#uomTypeError").hide();
+                uomTypeError=true;
+            }
+        }
+
+        function validate_uomModel(){
+            var uom_model= $("#uomModel").val();
+            var exp=/^[A-Z\-\s]{4,8}$/;
+            if(uom_model==''){
+                $("#uomModelError").show().html("UOM Model cannot be empty.");
+                uomModelError=false;
+            }
+            else if(!exp.test(uom_model)){
+                $("#uomModelError").show().html("UOM Model must be 4–8 uppercase letters. Only spaces and hyphens are allowed.");
+                uomModelError=false;
+            }
+            else{
+                $.ajax({
+                    url:'validate-uommodel',
+                    data:{'uomModel': uom_model},
+                    success: function(responseText){
+                        if(responseText==''){
+                            $("#uomModelError").hide();
+                            uomModelError=true;
                         }
-                    });
-                }
+                        else{
+                            $("#uomModelError").show().html(responseText);
+                            uomModelError=false;
+                        }
+                    }
+                });
             }
-            function validate_description(){
-                var description= $("#description").val();
-                var exp=/^[A-Za-z0-9\.\,\-\s]{10,100}$/;
-                if(description==''){
-                    $("#descriptionError").show();
-                    $("#descriptionError").html("<b>Description cannot be empty.</b>");
-                    $("#descriptionError").css('color',"red");
-                    descriptionError=false;
-                }
-                else if(!exp.test(description)){
-                	$("#descriptionError").show();
-                    $("#descriptionError").html("<b>Description must be 10–100 characters long and can only contain letters, numbers, spaces, commas, periods, and hyphens.</b>");
-                    $("#descriptionError").css('color',"red");
-                    descriptionError=false;
-					}
-                else{
-                    $("#descriptionError").hide();
-                    descriptionError=true;
-                }
+        }
+
+        function validate_description(){
+            var description= $("#description").val();
+            var exp=/^[A-Za-z0-9\.\,\-\s]{10,100}$/;
+            if(description==''){
+                $("#descriptionError").show().html("Description cannot be empty.");
+                descriptionError=false;
             }
-            $("#uomType").change(function(){
-                validate_uomType();
-            });
-            
-            $("#uomModel").keyup(function(){
-				$("#uomModel").val($("#uomModel").val().toUpperCase());
-                validate_uomModel();
-            });
-            
-            $("#description").keyup(function(){
-                validate_description();
-            });
-            
-            $("#formsubmit").submit(function(){
-				validate_uomType();
-                validate_uomModel();
-                validate_description();
-                if(uomModelError && uomTypeError && descriptionError){
-                    return true;
-                }
-                else{
-                    return false;
-                }
-			});
-            
+            else if(!exp.test(description)){
+                $("#descriptionError").show().html("Description must be 10–100 characters. Allowed: letters, numbers, spaces, commas, periods, hyphens.");
+                descriptionError=false;
+            }
+            else{
+                $("#descriptionError").hide();
+                descriptionError=true;
+            }
+        }
+
+        $("#uomType").change(validate_uomType);
+        $("#uomModel").keyup(function(){
+            $(this).val($(this).val().toUpperCase());
+            validate_uomModel();
         });
-    </script>
+        $("#description").keyup(validate_description);
+
+        $("#formsubmit").submit(function(){
+            validate_uomType();
+            validate_uomModel();
+            validate_description();
+            return uomModelError && uomTypeError && descriptionError;
+        });
+    });
+</script>
+
 </body>
 </html>

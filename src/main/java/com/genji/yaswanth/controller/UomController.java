@@ -3,6 +3,9 @@ package com.genji.yaswanth.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,18 +53,41 @@ public class UomController {
 	}
 
 	@GetMapping("/all")
-	public String getAllUoms(Model model) {
-		List<Uom> list = service.getAllUoms();
-		model.addAttribute("list", list);
+	public String getAllUoms(@PageableDefault(page=0 , size =2) Pageable input,
+							@RequestParam(name ="uomModel", required = false, defaultValue = "") String uomModel,
+							Model model) {
+		
+		if(uomModel.equals("")) {
+			Page<Uom> page = service.getAllUoms(input);
+			List<Uom> list = page.getContent();
+			model.addAttribute("list", list);
+			model.addAttribute("page", page);
+			Uom uom = new Uom();
+			uom.setUomModel(uomModel);
+			model.addAttribute("uom", uom);
+		}
+		else {
+			Page<Uom> page = service.findByUomModelContaining(uomModel, input);
+			List<Uom> list = page.getContent();
+			model.addAttribute("list", list);
+			model.addAttribute("page", page);
+			Uom uom = new Uom();
+			uom.setUomModel(uomModel);
+			model.addAttribute("uom", uom);
+		}
+	
 		return "UomData";
 	}
 
 	@GetMapping("/delete")
-	public String deleteUom(@RequestParam Integer id, Model model) {
+	public String deleteUom(@RequestParam Integer id,@PageableDefault(page=0,size=2) Pageable input, Model model) {
 		service.deleteUom(id);
 		String message = "UOM id "+id+" deleted";
 		model.addAttribute("message", message);
-		model.addAttribute("list", service.getAllUoms());
+		Page<Uom> page = service.getAllUoms(input);
+		List<Uom> list = page.getContent();
+		model.addAttribute("list", list);
+		model.addAttribute("page", page);
 		return "UomData";
 	}
 
@@ -72,11 +98,15 @@ public class UomController {
 	}
 
 	@PostMapping("/update")
-	public String updateUom(@ModelAttribute Uom uom, Model model) {
+	public String updateUom(@ModelAttribute Uom uom,@PageableDefault(page=0,size=2) Pageable input, Model model) {
 		service.updateUom(uom);
+		Page<Uom> page = service.getAllUoms(input);
+		List<Uom> list = page.getContent();
+		model.addAttribute("list", list);
+		model.addAttribute("page", page);
 		String message = "UOM " + uom.getId() + " updated";
 		model.addAttribute("message", message);
-		model.addAttribute("list", service.getAllUoms());
+
 		return "UomData";
 	}
 	

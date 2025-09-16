@@ -3,6 +3,9 @@ package com.genji.yaswanth.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.genji.yaswanth.model.Uom;
 
 public interface IUomService {
@@ -22,4 +25,8 @@ public interface IUomService {
 	public List<Object[]> getUomTypeAndCount();
 	
 	public Map<Integer,String> getUomIdAndModel();
+
+	public Page<Uom> getAllUoms(Pageable input);
+	
+	public Page<Uom> findByUomModelContaining(String model , Pageable input);
 }

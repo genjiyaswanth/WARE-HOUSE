@@ -14,5 +14,9 @@ public interface IGrnService {
 	public List<Grn> getAllGrns();
 	
 	public Integer saveGrnDetails(GrnDetails grndetails);
+	
+	public List<GrnDetails> getGrnDetailsByGrnId(Integer id);
+	
+	public void updateGrnDetailStatus(String grnDetailstatus, Integer grnDetailId);
 
 }

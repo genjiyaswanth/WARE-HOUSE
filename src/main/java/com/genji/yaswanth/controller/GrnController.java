@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.genji.yaswanth.model.Grn;
 import com.genji.yaswanth.model.GrnDetails;
@@ -49,6 +50,8 @@ public class GrnController {
 		return "GrnRegister";
 	}
 	
+	
+	
 	private void createGrnDetails(Grn grn) {
 		Integer purchaseOrderId= grn.getPurchaseOrder().getId();
 		List<PurchaseDetails> pdList = purchaseOrderService.getPurchaseDetailsByPurchaseOrderId(purchaseOrderId);
@@ -62,6 +65,32 @@ public class GrnController {
 			
 			service.saveGrnDetails(grnDetails);
 		}
+		
+	}
+	
+	@GetMapping("/all")
+	public String getAllGrns(Model model) {
+		List<Grn> grnList = service.getAllGrns();
+		model.addAttribute("grnlist", grnList);
+		return "GrnData";
+	}
+	
+	@GetMapping("/viewparts")
+	public String getGrnDetails(@RequestParam Integer id, Model model) {
+		List<GrnDetails> grndetails = service.getGrnDetailsByGrnId(id);
+		Grn grn = service.getOneGrn(id);
+		model.addAttribute("grndetails", grndetails);
+		model.addAttribute("grn", grn);
+		return "GrnDetails";
+	}
+	
+	@GetMapping("/updatestatus")
+	public String updateGrnDetailsStatus(@RequestParam Integer grndetailid,
+										 @RequestParam Integer grnid ,
+										 @RequestParam String status )
+	{
+		service.updateGrnDetailStatus(status, grndetailid);
+		return "redirect:viewparts?id="+grnid;
 	}
 	
 }

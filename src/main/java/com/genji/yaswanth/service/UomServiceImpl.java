@@ -1,11 +1,13 @@
 package com.genji.yaswanth.service;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.genji.yaswanth.exceptions.UomNotFoundException;
@@ -74,8 +76,19 @@ public class UomServiceImpl implements IUomService {
 		return map;
 	}
 
-	
+	@Override
+	public Page<Uom> getAllUoms(Pageable input) {
+		
+		return repo.findAll(input);
+	}
 
+	@Override
+	public Page<Uom> findByUomModelContaining(String model, Pageable input) {
+		
+		return repo.findByUomModelContaining(model, input);
+	}
+
+	
 	
 
 }

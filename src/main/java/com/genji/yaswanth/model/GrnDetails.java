@@ -35,6 +35,9 @@ public class GrnDetails {
 	@Column(name="grn_detail_item_value_col")
 	private Double itemValue;
 	
+	@Column(name="grn_detail_status_col")
+	private String status;
+	
 	@ManyToOne
 	@JoinColumn(name="grn_id_fk_col")
 	private Grn grn;

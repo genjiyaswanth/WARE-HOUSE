@@ -5,27 +5,31 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form th:action="@{/document/save}" method="post" enctype="multipart/form-data">
-<pre>
+
+	<div th:insert="/fragments/commonui :: userhead"></div>
+	<div th:insert="/fragments/commonui :: usermenu"></div>
+	
+	<form th:action="@{/document/save}" method="post"
+		enctype="multipart/form-data">
+		<pre>
 ID: <input type="text" name="fileId" id="fileId">
-DOC : <input type="file"  name="fileObj" id="fileObj">
+DOC : <input type="file" name="fileObj" id="fileObj">
 <input type="submit" value="UPLOAD">
 </pre>
-</form>
+	</form>
 
-<table border="1">
-<tr>
-<th>ID</th>
-<th>NAME</th>
-<th>DOWNLOAD</th>
-</tr>
-<tr th:each="ob:${list}">
-<td th:text="${ob[0]}"></td>
-<td th:text="${ob[1]}"></td>
-<td >
-<a th:href="@{/document/download(id=${ob[0]})}">DOWNLOAD</a>
-</td>
-</tr>
-</table>
+	<table border="1">
+		<tr>
+			<th>ID</th>
+			<th>NAME</th>
+			<th>DOWNLOAD</th>
+		</tr>
+		<tr th:each="ob:${list}">
+			<td th:text="${ob[0]}"></td>
+			<td th:text="${ob[1]}"></td>
+			<td><a th:href="@{/document/download(id=${ob[0]})}">DOWNLOAD</a>
+			</td>
+		</tr>
+	</table>
 </body>
 </html>

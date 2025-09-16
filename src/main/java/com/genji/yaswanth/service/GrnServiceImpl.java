@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.genji.yaswanth.exceptions.GrnNotFoundException;
 import com.genji.yaswanth.model.Grn;
@@ -49,6 +50,19 @@ public class GrnServiceImpl implements IGrnService {
 	public Integer saveGrnDetails(GrnDetails grndetails) {
 		grndetails = grnDetailsRepo.save(grndetails);
 		return grndetails.getId();
+	}
+
+	@Override
+	public List<GrnDetails> getGrnDetailsByGrnId(Integer id) {
+		
+		return grnDetailsRepo.getGrnDeatilsByGrnId(id);
+	}
+
+	@Transactional
+	@Override
+	public void updateGrnDetailStatus(String grnDetailstatus, Integer grnDetailId) {
+		grnDetailsRepo.updateGrnDetailStatus(grnDetailstatus, grnDetailId);
+		
 	}
 
 }
